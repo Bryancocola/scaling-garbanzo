@@ -21,7 +21,7 @@ jobs:
         run: pip install feedgen
 
       - name: Generate RSS
-        run: python generate_rss.py
+        run: python Feedbuild.py
 
       - name: Commit and push if changed
         run: |
