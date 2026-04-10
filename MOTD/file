@@ -1,0 +1,24 @@
+import boto3
+
+def copy_objects_with_prefix(bucket_name, old_prefix, new_prefix):
+    s3 = boto3.resource('s3')
+    bucket = s3.Bucket(bucket_name)
+    
+    # Iterate through objects that start with the old_prefix
+    for obj in bucket.objects.filter(Prefix=old_prefix):
+        # Create the new key name
+        new_key = obj.key.replace(old_prefix, new_prefix, 1)
+        
+        print(f"Copying {obj.key} to {new_key}...")
+        
+        # Define the source for the copy operation
+        copy_source = {
+            'Bucket': bucket_name,
+            'Key': obj.key
+        }
+        
+        # Perform the copy
+        bucket.copy(copy_source, new_key)
+
+# Usage
+copy_objects_with_prefix('my-cool-bucket', 'logs/2023/', 'archived/2023/')
